@@ -1,11 +1,11 @@
-import 'package:weather/model/weather_model.dart';
+import 'package:weather/domain/weather.dart';
 
-abstract class WeatherStates {}
+sealed class WeatherStates {}
 
 class WeatherLoading extends WeatherStates {}
 
 class WeatherLoaded extends WeatherStates {
-  List<WeatherData> weatherData;
+  List<Weather> weatherData;
   bool isLocationEnabled;
   WeatherLoaded({
     required this.weatherData,
