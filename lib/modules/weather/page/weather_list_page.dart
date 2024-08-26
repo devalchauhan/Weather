@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather/api/adapters/weather_adapter.dart';
 import 'package:weather/modules/weather/cubit/weather_cubit.dart';
 import 'package:weather/modules/weather/cubit/weather_state.dart';
 
@@ -24,10 +25,52 @@ class WeatherListPage extends StatelessWidget {
               itemCount: state.weatherData.length,
               itemBuilder: (context, index) {
                 var weather = state.weatherData[index];
-                return ListTile(
-                  title: Text(
-                    weather.dateTimeText,
-                    style: Theme.of(context).textTheme.headlineMedium,
+
+                final String iconUrl =
+                    'https://openweathermap.org/img/wn/${weather.clouds[0].icon}.png';
+
+                return Padding(
+                  padding:
+                      const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+                  child: ListTile(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    tileColor: Colors.grey.shade400,
+                    title: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            const Icon(Icons.thermostat),
+                            Text(
+                              '${weather.temp.toCelsius()}°C',
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                          ],
+                        ),
+                        Text(
+                          'Feels like ${weather.feelsLike.toCelsius()}°C',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                    subtitle: Row(
+                      children: [
+                        Image.network(
+                          iconUrl,
+                          fit: BoxFit.cover,
+                        ),
+                        Text(
+                          weather.clouds[0].description,
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                    trailing: Text(
+                      weather.dateTimeText.formatDateTime(),
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
                   ),
                 );
               },

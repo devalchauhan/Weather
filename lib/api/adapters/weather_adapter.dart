@@ -1,5 +1,6 @@
 import 'package:weather/api/models/weather_model.dart';
 import 'package:weather/domain/weather.dart';
+import 'package:intl/intl.dart';
 
 extension WeatherListAdapter on List<WeatherModel> {
   List<Weather> asWeatherList() {
@@ -30,5 +31,22 @@ extension CloudAdapter on WeatherData {
       description: description,
       icon: icon,
     );
+  }
+}
+
+extension DateTimeStringExtension on String {
+  String formatDateTime() {
+    DateTime dateTime = DateTime.parse(this);
+
+    final DateFormat formatter = DateFormat('MMMM dd, yyyy - hh:mm a');
+
+    return formatter.format(dateTime);
+  }
+}
+
+extension DoubleExtension on double {
+  String toCelsius() {
+    double celsius = this - 273.15;
+    return celsius.toStringAsFixed(1);
   }
 }
