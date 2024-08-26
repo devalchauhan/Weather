@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:weather/cubit/weather_cubit.dart';
 import 'package:weather/cubit/weather_state.dart';
 
@@ -38,7 +39,7 @@ class MyHomePage extends StatelessWidget {
             return const Center(
               child: CircularProgressIndicator(),
             );
-          } else if (state is WeatherLoaded) {
+          } else if (state is WeatherLoaded && state.isLocationEnabled) {
             return SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -50,6 +51,23 @@ class MyHomePage extends StatelessWidget {
                 ],
               ),
             );
+          } else if (state is WeatherLoaded && !state.isLocationEnabled) {
+            return Center(
+                child: Column(
+              children: [
+                const Text(
+                    'Your location permission is permenantly denied go to the settings and give location permission'),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextButton(
+                  onPressed: () {
+                    openAppSettings();
+                  },
+                  child: const Text('Go to setting'),
+                ),
+              ],
+            ));
           } else {
             return const Center(child: Text('Something went wrong!'));
           }

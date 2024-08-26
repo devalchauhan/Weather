@@ -40,6 +40,7 @@ dependencies:
   built_value: ^8.9.2
   hydrated_bloc: ^9.1.5
   geolocator: ^13.0.1
+  permission_handler: ^11.3.1
 
 dev_dependencies:
   flutter_test:
