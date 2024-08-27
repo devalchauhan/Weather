@@ -1,6 +1,5 @@
 import 'package:weather/api/models/weather_model.dart';
 import 'package:weather/domain/weather.dart';
-import 'package:intl/intl.dart';
 
 extension WeatherListAdapter on List<WeatherModel> {
   List<Weather> asWeatherList() {
@@ -11,22 +10,39 @@ extension WeatherListAdapter on List<WeatherModel> {
 extension WeatherAdapter on WeatherModel {
   Weather asWeather() {
     return Weather(
-      dateTimeInMilliSeconds: dt,
-      temp: main.temp,
-      feelsLike: main.feelsLike,
-      humidity: main.humidity,
-      clouds: weather.map((e) => e.asCloud()).toList(),
-      windSpeed: wind.speed,
-      windDegree: wind.deg,
+      dt: dt,
+      main: main.asMain(),
+      weather: weather.map((e) => e.asWeather()).toList(),
+      wind: wind.asWind(),
       visibility: visibility,
-      dateTimeText: dtTxt,
+      dtTxt: dtTxt,
     );
   }
 }
 
-extension CloudAdapter on WeatherData {
-  Cloud asCloud() {
-    return Cloud(
+extension MainAdapter on MainModel {
+  Main asMain() {
+    return Main(
+      temp: temp,
+      feelsLike: feelsLike,
+      humidity: humidity,
+    );
+  }
+}
+
+extension WindAdapter on WindModel {
+  Wind asWind() {
+    return Wind(
+      speed: speed,
+      deg: deg,
+      gust: gust,
+    );
+  }
+}
+
+extension CloudAdapter on WeatherDataModel {
+  WeatherData asWeather() {
+    return WeatherData(
       main: main,
       description: description,
       icon: icon,
@@ -34,19 +50,45 @@ extension CloudAdapter on WeatherData {
   }
 }
 
-extension DateTimeStringExtension on String {
-  String formatDateTime() {
-    DateTime dateTime = DateTime.parse(this);
-
-    final DateFormat formatter = DateFormat('MMMM dd, yyyy - hh:mm a');
-
-    return formatter.format(dateTime);
+extension WeatherModelAdapter on Weather {
+  WeatherModel asWeatherModel() {
+    return WeatherModel(
+      dt: dt,
+      main: main.asMainModel(),
+      weather: weather.map((e) => e.asWeatherModel()).toList(),
+      wind: wind.asWindModel(),
+      visibility: visibility,
+      dtTxt: dtTxt,
+    );
   }
 }
 
-extension DoubleExtension on double {
-  String toCelsius() {
-    double celsius = this - 273.15;
-    return celsius.toStringAsFixed(1);
+extension MainModelAdapter on Main {
+  MainModel asMainModel() {
+    return MainModel(
+      temp: temp,
+      feelsLike: feelsLike,
+      humidity: humidity,
+    );
+  }
+}
+
+extension WindModelAdapter on Wind {
+  WindModel asWindModel() {
+    return WindModel(
+      speed: speed,
+      deg: deg,
+      gust: gust,
+    );
+  }
+}
+
+extension WeatherDataModelAdapter on WeatherData {
+  WeatherDataModel asWeatherModel() {
+    return WeatherDataModel(
+      main: main,
+      description: description,
+      icon: icon,
+    );
   }
 }

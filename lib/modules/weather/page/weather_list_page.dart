@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:weather/api/adapters/weather_adapter.dart';
 import 'package:weather/modules/weather/cubit/weather_cubit.dart';
 import 'package:weather/modules/weather/cubit/weather_state.dart';
+import 'package:weather/utils/extensions/helper_extensions.dart';
 
 class WeatherListPage extends StatelessWidget {
   const WeatherListPage({super.key});
@@ -27,7 +27,7 @@ class WeatherListPage extends StatelessWidget {
                 var weather = state.weatherData[index];
 
                 final String iconUrl =
-                    'https://openweathermap.org/img/wn/${weather.clouds[0].icon}.png';
+                    'https://openweathermap.org/img/wn/${weather.weather[0].icon}.png';
 
                 return Padding(
                   padding:
@@ -44,13 +44,13 @@ class WeatherListPage extends StatelessWidget {
                           children: [
                             const Icon(Icons.thermostat),
                             Text(
-                              '${weather.temp.toCelsius()}°C',
+                              '${weather.main.temp.toCelsius()}°C',
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           ],
                         ),
                         Text(
-                          'Feels like ${weather.feelsLike.toCelsius()}°C',
+                          'Feels like ${weather.main.feelsLike.toCelsius()}°C',
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
@@ -60,15 +60,21 @@ class WeatherListPage extends StatelessWidget {
                         Image.network(
                           iconUrl,
                           fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const SizedBox(
+                              height: 10,
+                              width: 10,
+                            );
+                          },
                         ),
                         Text(
-                          weather.clouds[0].description,
+                          weather.weather[0].description,
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
                     ),
                     trailing: Text(
-                      weather.dateTimeText.formatDateTime(),
+                      weather.dtTxt.formatDateTime(),
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ),

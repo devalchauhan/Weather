@@ -13,7 +13,7 @@ class SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 4), () {
+    Timer(const Duration(seconds: 2), () {
       Navigator.pushReplacementNamed(
         context,
         AppRoute.home.routeName,

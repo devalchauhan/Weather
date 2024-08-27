@@ -2,9 +2,9 @@ import 'package:equatable/equatable.dart';
 
 class WeatherModel extends Equatable {
   final int dt;
-  final Main main;
-  final List<WeatherData> weather;
-  final Wind wind;
+  final MainModel main;
+  final List<WeatherDataModel> weather;
+  final WindModel wind;
   final int visibility;
   final String dtTxt;
 
@@ -20,14 +20,25 @@ class WeatherModel extends Equatable {
   factory WeatherModel.fromJson(Map<String, dynamic> json) {
     return WeatherModel(
       dt: json['dt'],
-      main: Main.fromJson(json['main']),
-      weather: List<WeatherData>.from(
-        json['weather'].map((x) => WeatherData.fromJson(x)),
+      main: MainModel.fromJson(json['main']),
+      weather: List<WeatherDataModel>.from(
+        json['weather'].map((x) => WeatherDataModel.fromJson(x)),
       ),
-      wind: Wind.fromJson(json['wind']),
+      wind: WindModel.fromJson(json['wind']),
       visibility: json['visibility'],
       dtTxt: json['dt_txt'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'dt': dt,
+      'main': main.toJson(),
+      'weather': weather.map((data) => data.toJson()).toList(),
+      'wind': wind.toJson(),
+      'visibility': visibility,
+      'dt_txt': dtTxt,
+    };
   }
 
   @override
@@ -41,23 +52,31 @@ class WeatherModel extends Equatable {
       ];
 }
 
-class Main extends Equatable {
+class MainModel extends Equatable {
   final double temp;
   final double feelsLike;
   final int humidity;
 
-  const Main({
+  const MainModel({
     required this.temp,
     required this.feelsLike,
     required this.humidity,
   });
 
-  factory Main.fromJson(Map<String, dynamic> json) {
-    return Main(
+  factory MainModel.fromJson(Map<String, dynamic> json) {
+    return MainModel(
       temp: (json['temp'] as num).toDouble(),
       feelsLike: (json['feels_like'] as num).toDouble(),
       humidity: json['humidity'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'temp': temp,
+      'feels_like': feelsLike,
+      'humidity': humidity,
+    };
   }
 
   @override
@@ -68,23 +87,31 @@ class Main extends Equatable {
       ];
 }
 
-class WeatherData extends Equatable {
+class WeatherDataModel extends Equatable {
   final String main;
   final String description;
   final String icon;
 
-  const WeatherData({
+  const WeatherDataModel({
     required this.main,
     required this.description,
     required this.icon,
   });
 
-  factory WeatherData.fromJson(Map<String, dynamic> json) {
-    return WeatherData(
+  factory WeatherDataModel.fromJson(Map<String, dynamic> json) {
+    return WeatherDataModel(
       main: json['main'],
       description: json['description'],
       icon: json['icon'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'main': main,
+      'description': description,
+      'icon': icon,
+    };
   }
 
   @override
@@ -95,23 +122,31 @@ class WeatherData extends Equatable {
       ];
 }
 
-class Wind extends Equatable {
+class WindModel extends Equatable {
   final double speed;
   final int deg;
   final double gust;
 
-  const Wind({
+  const WindModel({
     required this.speed,
     required this.deg,
     required this.gust,
   });
 
-  factory Wind.fromJson(Map<String, dynamic> json) {
-    return Wind(
+  factory WindModel.fromJson(Map<String, dynamic> json) {
+    return WindModel(
       speed: (json['speed'] as num).toDouble(),
       deg: json['deg'],
       gust: (json['gust'] as num).toDouble(),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'speed': speed,
+      'deg': deg,
+      'gust': gust,
+    };
   }
 
   @override

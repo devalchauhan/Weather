@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:weather/api/di/dependency_injector.dart';
 import 'package:weather/navigation/app_router.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: await getApplicationDocumentsDirectory(),
+  );
   DI.I.initialize();
   runApp(const WeatherApp());
 }
